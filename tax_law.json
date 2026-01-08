@@ -16,5 +16,23 @@
     "title": "Pascual vs. Secretary of Public Works (110 Phil. 331)",
     "ratio": "Tax revenues must only be used for public purposes. Appropriation for private roads is unconstitutional.",
     "mnemonic": "Pascual: Public Purpose Rule"
+  },
+  {
+    "subject": "Taxation",
+    "title": "Commissioner vs. Court of Appeals (G.R. No. 115349)",
+    "ratio": "The Power to Tax includes the power to destroy if used as an implement of police power, but if used solely for revenue, it must not be confiscatory.",
+    "mnemonic": "Tax: Power to Destroy vs. Revenue"
+  },
+  {
+    "subject": "Taxation",
+    "title": "Abakada Gura vs. Ermita (G.R. No. 168056)",
+    "ratio": "The delegation of the power to increase the VAT rate to the President is not an unconstitutional delegation of legislative power, as the President acts only as an agent of Congress under specific conditions.",
+    "mnemonic": "Abakada: Valid VAT Delegation"
+  },
+  {
+    "subject": "Taxation",
+    "title": "Doctrine of Equitable Recoupment",
+    "ratio": "This doctrine is NOT allowed in the Philippines. A taxpayer cannot offset a tax refund with a tax liability if the claims arise from different taxes or periods.",
+    "mnemonic": "Equitable Recoupment: Prohibited in PH"
   }
 ]
