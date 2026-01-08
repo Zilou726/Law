@@ -45,6 +45,8 @@
     <button onclick="fetchModule('criminal_law.json')">Criminal Law</button>
     <button onclick="fetchModule('remedial_law.json')">Remedial Law</button>
     <button onclick="fetchModule('political_law.json')">Political Law</button>
+    <button onclick="fetchModule('labor_law.json')">Labor Law</button>
+    <button onclick="fetchModule('tax_law.json')">Taxation Law</button>
 
     <div style="font-size: 0.75rem; color: #aaa; margin: 20px 0 10px;">STUDY TOOLS:</div>
     <button onclick="showView('db')" id="nav-db" class="active-nav">📚 Repository</button>
@@ -83,7 +85,7 @@
 <script>
     let activeDB = []; // Currently displayed data
     let globalIndex = []; // All data from all files
-    let moduleFiles = ['civil_law.json', 'criminal_law.json', 'remedial_law.json', 'political_law.json'];
+    let moduleFiles = ['civil_law.json','criminal_law.json','remedial_law.json','political_law.json','labor_law.json','tax_law.json'];
     let currentFlash = null;
     let isFlipped = false;
 
@@ -175,3 +177,4 @@
 </script>
 </body>
 </html>
+
