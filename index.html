@@ -3,69 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiLaw: Mobile Bar Suite</title>
+    <title>LexPH: Mobile Bar Suite Fixed</title>
     <style>
         :root { --navy: #002147; --crimson: #800000; --gold: #b8860b; --bg: #f8f9fa; --white: #ffffff; }
-        
         * { box-sizing: border-box; }
         body { font-family: 'Georgia', serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* --- MOBILE SIDEBAR LOGIC --- */
-        nav { 
-            width: 280px; background: var(--navy); color: white; padding: 20px; 
-            display: flex; flex-direction: column; height: 100%; 
-            position: fixed; left: -280px; transition: 0.3s ease; z-index: 1000; 
-        }
+        /* Sidebar & Overlay */
+        nav { width: 280px; background: var(--navy); color: white; padding: 20px; display: flex; flex-direction: column; height: 100%; position: fixed; left: -280px; transition: 0.3s ease; z-index: 1000; }
         nav.open { left: 0; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
 
-        /* Overlay for mobile */
-        #overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); z-index: 999; 
-        }
-
-        /* --- UI HEADER --- */
-        header { 
-            position: fixed; top: 0; width: 100%; height: 60px; background: var(--navy); 
-            display: flex; align-items: center; padding: 0 15px; color: white; z-index: 900; 
-        }
+        /* Header */
+        header { position: fixed; top: 0; width: 100%; height: 60px; background: var(--navy); display: flex; align-items: center; padding: 0 15px; color: white; z-index: 900; border-bottom: 2px solid var(--gold); }
         .menu-btn { font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--gold); margin-right: 15px; }
 
-        /* Main Workspace */
+        /* Main Area */
         main { flex: 1; padding: 80px 15px 30px; overflow-y: auto; width: 100%; }
         .container { max-width: 800px; margin: auto; }
         .card { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
-
-        /* Search Bar */
-        #globalSearch { 
-            width: 100%; padding: 12px 20px; border: 2px solid var(--navy); 
-            border-radius: 25px; font-size: 1rem; margin-bottom: 20px; 
-        }
-
+        
         /* Nav Buttons */
         nav h1 { color: var(--gold); font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
-        nav .section-label { font-size: 0.7rem; color: #aaa; margin: 15px 0 5px; text-transform: uppercase; }
-        nav button { 
-            background: none; border: 1px solid rgba(255,255,255,0.1); color: white; 
-            padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 6px; 
-        }
+        nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 6px; width: 100%; }
         nav button:hover, .active-nav { background: var(--crimson) !important; border-color: var(--gold); }
 
-        /* Study Elements */
+        /* UI Elements */
+        #globalSearch { width: 100%; padding: 12px 20px; border: 2px solid var(--navy); border-radius: 25px; margin-bottom: 20px; }
         .ratio-text { font-style: italic; color: #333; border-left: 4px solid var(--gold); padding-left: 15px; margin: 15px 0; font-size: 1.05rem; }
-        .quiz-option { 
-            display: block; width: 100%; padding: 16px; margin: 10px 0; border: 1px solid #ddd; 
-            border-radius: 8px; background: white; cursor: pointer; text-align: left; font-size: 1rem; 
-        }
-        .correct { background: #d4edda !important; border-color: #28a745 !important; }
+        .quiz-option { display: block; width: 100%; padding: 16px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; background: white; cursor: pointer; text-align: left; font-size: 1rem; }
+        .correct { background: #d4edda !important; border-color: #28a745 !important; font-weight: bold; }
         .wrong { background: #f8d7da !important; border-color: #dc3545 !important; }
+        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; }
 
-        /* Desktop Adjustments */
         @media (min-width: 1024px) {
             nav { position: relative; left: 0; }
-            .menu-btn { display: none; }
-            #overlay { display: none !important; }
-            header { display: none; }
+            .menu-btn, #overlay, header { display: none; }
             main { padding: 30px; }
         }
     </style>
@@ -80,10 +53,10 @@
 </header>
 
 <nav id="sidebar">
-    <h1>ZiLawPH Master</h1>
-    <button onclick="indexAllData(); toggleNav()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">🔍 Index All Modules</button>
+    <h1>LexPH Master</h1>
+    <button onclick="indexAllData(); toggleNav()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">🔄 Index All Modules</button>
     
-    <div class="section-label">Subjects</div>
+    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">SUBJECTS</div>
     <button onclick="fetchModule('civil_law.json'); toggleNav()">Civil Law</button>
     <button onclick="fetchModule('criminal_law.json'); toggleNav()">Criminal Law</button>
     <button onclick="fetchModule('political_law.json'); toggleNav()">Political Law</button>
@@ -91,7 +64,7 @@
     <button onclick="fetchModule('tax_law.json'); toggleNav()">Taxation</button>
     <button onclick="fetchModule('remedial_law.json'); toggleNav()">Remedial Law</button>
 
-    <div class="section-label">Tools</div>
+    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">TOOLS</div>
     <button onclick="showView('db'); toggleNav()" id="nav-db" class="active-nav">📚 Repository</button>
     <button onclick="showView('exam'); toggleNav()" id="nav-exam">📝 Mock Exam</button>
     <button onclick="showView('flash'); toggleNav()" id="nav-flash">🎴 Flashcards</button>
@@ -99,42 +72,44 @@
 
 <main>
     <div class="container">
-        <input type="text" id="globalSearch" placeholder="Search across all modules..." onkeyup="handleSearch()">
+        <input type="text" id="globalSearch" placeholder="Search keywords..." onkeyup="handleSearch()">
 
         <div id="view-db" class="view">
-            <h2 id="view-title" style="color: var(--navy);">Legal Repository</h2>
+            <h2 id="view-title">Legal Repository</h2>
             <div id="db-content"></div>
         </div>
 
         <div id="view-exam" class="view" style="display:none;">
             <div id="exam-setup" class="card">
                 <h2>Mock Bar Exam</h2>
-                <label>Number of Questions:</label>
-                <select id="exam-qty" style="padding: 10px; width: 100%; margin: 15px 0;">
+                <p>Mixed-subject quiz from your indexed files.</p>
+                <select id="exam-qty" style="padding: 12px; width: 100%; border-radius: 8px; margin-bottom: 15px;">
                     <option value="5">5 Questions</option>
                     <option value="10">10 Questions</option>
                     <option value="20">20 Questions</option>
                 </select>
-                <button class="quiz-option" style="background: var(--navy); color: white; text-align: center;" onclick="startMockExam()">Generate Exam</button>
+                <button class="quiz-option btn-gold" onclick="startMockExam()">Generate Exam</button>
             </div>
+            
             <div id="exam-container" class="card" style="display:none;">
-                <div id="exam-progress" style="font-size: 0.8rem; margin-bottom: 10px;"></div>
+                <div id="exam-progress" style="font-size: 0.85rem; color: #666; margin-bottom: 10px;"></div>
                 <div id="exam-question"></div>
                 <div id="exam-options"></div>
-                <button id="next-exam-btn" class="quiz-option" style="display:none; background: var(--gold); text-align: center;" onclick="nextExamQuestion()">Next →</button>
+                <button id="next-exam-btn" class="quiz-option btn-gold" style="display:none;" onclick="nextExamQuestion()">Next Question →</button>
             </div>
+
             <div id="exam-results" class="card" style="display:none; text-align:center;">
                 <h1 id="final-score" style="color: var(--navy);"></h1>
                 <p id="score-feedback"></p>
-                <button class="quiz-option" style="background: var(--navy); color: white; text-align: center;" onclick="showView('exam')">Restart Exam</button>
+                <button class="quiz-option btn-gold" onclick="showView('exam')">Restart Exam</button>
             </div>
         </div>
 
         <div id="view-flash" class="view" style="display:none;">
-            <div class="card" style="min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer;" onclick="flipFlash()">
-                <div id="flash-display">Index all modules and tap 'Next' to start.</div>
+            <div class="card" style="min-height: 280px; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; border: 2px solid var(--gold);" onclick="flipFlash()">
+                <div id="flash-display">Index modules & tap 'Next' to start.</div>
             </div>
-            <button class="quiz-option" style="background: var(--navy); color: white; text-align: center;" onclick="nextFlash()">Next Random Case</button>
+            <button class="quiz-option btn-gold" onclick="nextFlash()">Next Random Case</button>
         </div>
     </div>
 </main>
@@ -143,23 +118,20 @@
     let activeDB = [];
     let globalIndex = [];
     let moduleFiles = ['civil_law.json', 'criminal_law.json', 'political_law.json', 'labor_law.json', 'tax_law.json', 'remedial_law.json'];
+    
     let examQuestions = [];
     let currentExamIdx = 0;
     let examScore = 0;
+    let currentFlash = null;
+    let isFlipped = false;
 
-    // --- MOBILE NAV TOGGLE ---
     function toggleNav() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const isMobile = window.innerWidth < 1024;
-        
-        if(isMobile) {
-            sidebar.classList.toggle('open');
-            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        if (window.innerWidth < 1024) {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
         }
     }
 
-    // --- DATA FETCH & RENDER ---
     async function indexAllData() {
         globalIndex = [];
         for (let file of moduleFiles) {
@@ -169,31 +141,34 @@
                     const data = await res.json();
                     globalIndex = [...globalIndex, ...data];
                 }
-            } catch (e) { console.log("Missing " + file); }
+            } catch (e) { console.warn("Skipped: " + file); }
         }
         activeDB = globalIndex;
         renderDB();
-        alert("Synced " + globalIndex.length + " cases from your GitHub repo.");
+        alert("Synced " + globalIndex.length + " cases. You can now use Exams and Flashcards!");
     }
 
     async function fetchModule(file) {
-        const res = await fetch(file);
-        if(res.ok) {
-            activeDB = await res.json();
-            document.getElementById('view-title').innerText = file.replace('.json','').toUpperCase();
-            renderDB();
-            showView('db');
-        }
+        try {
+            const res = await fetch(file);
+            if(res.ok) {
+                activeDB = await res.json();
+                document.getElementById('view-title').innerText = file.replace('.json','').toUpperCase().replace('_', ' ');
+                renderDB();
+                showView('db');
+            }
+        } catch(e) { alert("File not found on GitHub."); }
     }
 
     function renderDB(data = activeDB) {
         const area = document.getElementById('db-content');
+        if(!data.length) { area.innerHTML = "<p>No data loaded. Please index modules.</p>"; return; }
         area.innerHTML = data.map(i => `
             <div class="card">
-                <span class="subject-tag">${i.subject || 'Law'}</span>
-                <h3 style="margin: 10px 0;">${i.title}</h3>
+                <small style="color:var(--gold); font-weight:bold;">${i.subject || 'Law'}</small>
+                <h3 style="margin: 5px 0 10px 0;">${i.title}</h3>
                 <p class="ratio-text">${i.ratio}</p>
-                ${i.mnemonic ? `<div style="font-weight:bold; color:var(--navy);">MNEMONIC: ${i.mnemonic}</div>` : ''}
+                ${i.mnemonic ? `<div style="font-weight:bold; color:var(--navy); font-size:0.9rem;">Trigger: ${i.mnemonic}</div>` : ''}
             </div>
         `).join('');
     }
@@ -202,27 +177,32 @@
         document.querySelectorAll('.view').forEach(x => x.style.display = 'none');
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
         document.getElementById('view-' + v).style.display = 'block';
-        const navBtn = document.getElementById('nav-' + v);
-        if(navBtn) navBtn.classList.add('active-nav');
+        if(document.getElementById('nav-' + v)) document.getElementById('nav-' + v).classList.add('active-nav');
+        if(v === 'exam') { 
+            document.getElementById('exam-setup').style.display = 'block';
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'none';
+        }
     }
 
-    // --- SEARCH ---
     function handleSearch() {
         const term = document.getElementById('globalSearch').value.toLowerCase();
-        const source = globalIndex.length > 0 ? globalIndex : activeDB;
-        const filtered = source.filter(i => i.title.toLowerCase().includes(term) || i.ratio.toLowerCase().includes(term));
+        const pool = globalIndex.length ? globalIndex : activeDB;
+        const filtered = pool.filter(i => i.title.toLowerCase().includes(term) || i.ratio.toLowerCase().includes(term));
         renderDB(filtered);
     }
 
-    // --- EXAM ENGINE ---
+    // --- MOCK EXAM FIX ---
     function startMockExam() {
-        const pool = globalIndex.length > 0 ? globalIndex : activeDB;
-        if(pool.length < 5) return alert("Index all modules first!");
+        const pool = globalIndex.length ? globalIndex : activeDB;
+        if(pool.length < 5) return alert("Please index modules first!");
+        
         const qty = parseInt(document.getElementById('exam-qty').value);
         examQuestions = [...pool].sort(() => 0.5 - Math.random()).slice(0, qty);
-        currentExamIdx = 0; examScore = 0;
+        currentExamIdx = 0;
+        examScore = 0;
+        
         document.getElementById('exam-setup').style.display = 'none';
-        document.getElementById('exam-results').style.display = 'none';
         document.getElementById('exam-container').style.display = 'block';
         loadExamQuestion();
     }
@@ -230,48 +210,66 @@
     function loadExamQuestion() {
         const q = examQuestions[currentExamIdx];
         document.getElementById('exam-progress').innerText = `Question ${currentExamIdx + 1} of ${examQuestions.length}`;
-        document.getElementById('exam-question').innerHTML = `<p class="ratio-text">"...${q.ratio}"</p>`;
-        const pool = globalIndex.length > 0 ? globalIndex : activeDB;
+        document.getElementById('exam-question').innerHTML = `<p class="ratio-text">${q.ratio}</p>`;
+        
+        const pool = globalIndex.length ? globalIndex : activeDB;
         let opts = [q.title];
         while(opts.length < 4) {
             let r = pool[Math.floor(Math.random()*pool.length)].title;
             if(!opts.includes(r)) opts.push(r);
         }
         opts.sort(() => 0.5 - Math.random());
-        document.getElementById('exam-options').innerHTML = opts.map(o => `<button class="quiz-option" onclick="checkAnswer(this, '${o}', '${q.title}')">${o}</button>`).join('');
+        
+        document.getElementById('exam-options').innerHTML = opts.map(o => 
+            `<button class="quiz-option" onclick="checkAnswer(this, '${o}', '${q.title}')">${o}</button>`
+        ).join('');
         document.getElementById('next-exam-btn').style.display = 'none';
     }
 
     function checkAnswer(btn, sel, cor) {
-        document.querySelectorAll('.quiz-option').forEach(b => b.style.pointerEvents = 'none');
-        if(sel === cor) { btn.classList.add('correct'); examScore++; }
-        else { btn.classList.add('wrong'); document.querySelectorAll('.quiz-option').forEach(b => { if(b.innerText === cor) b.classList.add('correct'); }); }
+        document.querySelectorAll('#exam-options .quiz-option').forEach(b => b.style.pointerEvents = 'none');
+        if(sel === cor) {
+            btn.classList.add('correct');
+            examScore++;
+        } else {
+            btn.classList.add('wrong');
+            document.querySelectorAll('#exam-options .quiz-option').forEach(b => {
+                if(b.innerText === cor) b.classList.add('correct');
+            });
+        }
         document.getElementById('next-exam-btn').style.display = 'block';
     }
 
     function nextExamQuestion() {
         currentExamIdx++;
-        if(currentExamIdx < examQuestions.length) loadExamQuestion();
-        else {
+        if(currentExamIdx < examQuestions.length) {
+            loadExamQuestion();
+        } else {
             document.getElementById('exam-container').style.display = 'none';
             document.getElementById('exam-results').style.display = 'block';
             document.getElementById('final-score').innerText = `${examScore} / ${examQuestions.length}`;
-            document.getElementById('score-feedback').innerText = examScore/examQuestions.length >= 0.75 ? "Excellent! Keep it up." : "Review your mnemonics.";
+            document.getElementById('score-feedback').innerText = (examScore/examQuestions.length) >= 0.75 ? "Bar Ready! Excellent work." : "Keep reviewing your doctrines.";
         }
     }
 
-    // --- FLASHCARDS ---
-    let cf = null; let f = false;
+    // --- FLASHCARDS FIX ---
     function nextFlash() {
-        const p = globalIndex.length > 0 ? globalIndex : activeDB;
-        if(!p.length) return;
-        cf = p[Math.floor(Math.random()*p.length)]; f = false;
-        document.getElementById('flash-display').innerHTML = `<h3>${cf.title}</h3><small>Tap to reveal Doctrine</small>`;
+        const pool = globalIndex.length ? globalIndex : activeDB;
+        if(!pool.length) return alert("Index modules first!");
+        currentFlash = pool[Math.floor(Math.random()*pool.length)];
+        isFlipped = false;
+        document.getElementById('flash-display').innerHTML = `<h3>${currentFlash.title}</h3><p style="color:#666;">(Tap to reveal Ratio)</p>`;
     }
+
     function flipFlash() {
-        if(!cf) return;
-        document.getElementById('flash-display').innerHTML = f ? `<h3>${cf.title}</h3>` : `<p class="ratio-text">${cf.ratio}</p><strong>${cf.mnemonic || ''}</strong>`;
-        f = !f;
+        if(!currentFlash) return;
+        const display = document.getElementById('flash-display');
+        if(isFlipped) {
+            display.innerHTML = `<h3>${currentFlash.title}</h3><p style="color:#666;">(Tap to reveal Ratio)</p>`;
+        } else {
+            display.innerHTML = `<p class="ratio-text">${currentFlash.ratio}</p><div style="color:var(--navy); font-weight:bold;">${currentFlash.mnemonic || ''}</div>`;
+        }
+        isFlipped = !isFlipped;
     }
 </script>
 </body>
