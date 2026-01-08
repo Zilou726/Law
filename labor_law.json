@@ -1,0 +1,26 @@
+[
+  {
+    "subject": "Labor",
+    "title": "Serrano vs. Isetann (G.R. No. 117040)",
+    "ratio": "If the dismissal is for a just cause but without statutory due process, the dismissal is valid but the employer must pay nominal damages.",
+    "mnemonic": "Serrano: Just Cause, No Process = Damages"
+  },
+  {
+    "subject": "Labor",
+    "title": "Agabon vs. NLRC (G.R. No. 158693)",
+    "ratio": "Reiterated that the dismissal for a just cause but without notice/hearing is valid; increased nominal damages to P30,000 for just cause and P50,000 for authorized cause.",
+    "mnemonic": "Agabon: The 30k/50k Rule"
+  },
+  {
+    "subject": "Labor",
+    "title": "Sonza vs. ABS-CBN (G.R. No. 138051)",
+    "ratio": "Established that a 'Talent' or high-profile broadcaster may be an independent contractor rather than an employee based on the Four-Fold Test.",
+    "mnemonic": "Sonza: Independent Contractor"
+  },
+  {
+    "subject": "Labor",
+    "title": "Four-Fold Test Doctrine",
+    "ratio": "To determine Employer-Employee relationship: (1) Selection/engagement, (2) Payment of wages, (3) Power of dismissal, (4) Power of control (The most important).",
+    "mnemonic": "S-W-D-C (Selection, Wages, Dismissal, Control)"
+  }
+]
