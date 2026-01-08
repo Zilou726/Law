@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiLawPH: Bar Analytics Edition</title>
+    <title>LexPH: Bar Analytics Edition</title>
     <style>
         :root { --navy: #002147; --crimson: #800000; --gold: #b8860b; --bg: #f8f9fa; --white: #ffffff; }
         * { box-sizing: border-box; }
@@ -25,7 +25,7 @@
         nav h1 { color: var(--gold); font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
         nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 6px; width: 100%; }
         nav button:hover, .active-nav { background: var(--crimson) !important; border-color: var(--gold); }
-        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; margin-top: 10px; }
+        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; margin-top: 10px; border: none; }
 
         /* UI Styling */
         .ratio-text { font-style: italic; color: #333; border-left: 4px solid var(--gold); padding-left: 15px; margin: 15px 0; font-size: 1.05rem; }
@@ -46,11 +46,11 @@
 <div id="overlay" onclick="toggleNav()"></div>
 <header>
     <button class="menu-btn" onclick="toggleNav()">☰</button>
-    <div style="font-weight: bold; color: var(--gold);">ZiLawPH Analytics</div>
+    <div style="font-weight: bold; color: var(--gold);">LexPH Analytics</div>
 </header>
 
 <nav id="sidebar">
-    <h1>ZiLawPH Master</h1>
+    <h1>LexPH Master</h1>
     <button onclick="indexAllData(); toggleNav()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">🔄 Sync All Modules</button>
     
     <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">SUBJECTS</div>
@@ -96,13 +96,13 @@
                 <div id="exam-progress" style="font-size: 0.85rem; color: #666; margin-bottom: 10px;"></div>
                 <div id="exam-question"></div>
                 <div id="exam-options"></div>
-                <button id="next-exam-btn" class="quiz-option btn-gold" style="display:none;" onclick="nextExamQuestion()">Next →</button>
+                <button id="next-exam-btn" class="quiz-option btn-gold" style="display:none;" onclick="nextExamQuestion()">Next Question →</button>
             </div>
 
             <div id="exam-results" class="card" style="display:none; text-align:center;">
                 <h1 id="final-score" style="color: var(--navy); font-size: 3rem; margin: 10px 0;"></h1>
                 <p id="score-feedback" style="font-weight: bold;"></p>
-                <button class="quiz-option btn-gold" onclick="showView('exam')">Try Again</button>
+                <button class="quiz-option btn-gold" onclick="resetExamUI()">Try Again</button>
             </div>
         </div>
 
@@ -113,9 +113,7 @@
                     <small>Average Accuracy</small>
                     <h1 id="avg-accuracy" style="color: var(--gold); margin: 0;">0%</h1>
                 </div>
-                <div id="history-list">
-                    <p style="color: #666;">No exam history found. Take a quiz to start tracking!</p>
-                </div>
+                <div id="history-list"></div>
                 <button onclick="clearHistory()" style="margin-top: 20px; color: crimson; background: none; border: none; font-size: 0.8rem; cursor: pointer;">Clear History Data</button>
             </div>
         </div>
@@ -132,7 +130,6 @@
     let currentExamIdx = 0;
     let examScore = 0;
 
-    // --- NAV & STORAGE ---
     function toggleNav() {
         if (window.innerWidth < 1024) {
             document.getElementById('sidebar').classList.toggle('open');
@@ -146,6 +143,7 @@
         document.getElementById('view-' + v).style.display = 'block';
         if(document.getElementById('nav-' + v)) document.getElementById('nav-' + v).classList.add('active-nav');
         if(v === 'stats') loadStats();
+        if(v === 'exam') resetExamUI();
     }
 
     // --- DATA HANDLING ---
@@ -162,17 +160,19 @@
         }
         activeDB = globalIndex;
         renderDB();
-        alert("Indexed " + globalIndex.length + " cases.");
+        alert("Synced " + globalIndex.length + " cases.");
     }
 
     async function fetchModule(file) {
-        const res = await fetch(file);
-        if(res.ok) {
-            activeDB = await res.json();
-            document.getElementById('view-title').innerText = file.replace('.json','').toUpperCase().replace('_', ' ');
-            renderDB();
-            showView('db');
-        }
+        try {
+            const res = await fetch(file);
+            if(res.ok) {
+                activeDB = await res.json();
+                document.getElementById('view-title').innerText = file.replace('.json','').toUpperCase().replace('_', ' ');
+                renderDB();
+                showView('db');
+            }
+        } catch(e) { alert("File not found on GitHub."); }
     }
 
     function renderDB(data = activeDB) {
@@ -187,11 +187,17 @@
         `).join('');
     }
 
-    // --- EXAM ENGINE ---
+    // --- FIXED EXAM ENGINE ---
+    function resetExamUI() {
+        document.getElementById('exam-setup').style.display = 'block';
+        document.getElementById('exam-container').style.display = 'none';
+        document.getElementById('exam-results').style.display = 'none';
+    }
+
     function startMockExam() {
         const scope = document.getElementById('exam-scope').value;
         const pool = (scope === 'global') ? globalIndex : activeDB;
-        if(!pool.length) return alert("Load data first!");
+        if(!pool.length) return alert("Load data first using the sidebar!");
 
         const qty = parseInt(document.getElementById('exam-qty').value);
         examQuestions = [...pool].sort(() => 0.5 - Math.random()).slice(0, qty);
@@ -238,26 +244,21 @@
         const finalScoreText = `${examScore}/${examQuestions.length}`;
         document.getElementById('final-score').innerText = finalScoreText;
         
-        const pct = (examScore / examQuestions.length) * 100;
+        const pct = Math.round((examScore / examQuestions.length) * 100);
         document.getElementById('score-feedback').innerText = pct >= 75 ? "EXCELLENT (BAR READY)" : "KEEP STUDYING";
         
-        // Save to LocalStorage
         const history = JSON.parse(localStorage.getItem('lexph_history') || '[]');
         history.push({ date: new Date().toLocaleDateString(), score: finalScoreText, percent: pct });
         localStorage.setItem('lexph_history', JSON.stringify(history));
     }
 
-    // --- PERFORMANCE ANALYTICS ---
     function loadStats() {
         const history = JSON.parse(localStorage.getItem('lexph_history') || '[]');
         const list = document.getElementById('history-list');
-        if(!history.length) {
-            list.innerHTML = "<p>Take a quiz to see results here.</p>";
-            return;
-        }
+        if(!history.length) { list.innerHTML = "<p>No history found.</p>"; return; }
         
         let totalPct = 0;
-        list.innerHTML = history.reverse().map(h => {
+        list.innerHTML = history.slice().reverse().map(h => {
             totalPct += h.percent;
             return `<div class="history-item"><span>${h.date}</span><strong>${h.score} (${h.percent}%)</strong></div>`;
         }).join('');
@@ -266,7 +267,7 @@
     }
 
     function clearHistory() {
-        if(confirm("Wipe all performance data?")) {
+        if(confirm("Clear performance data?")) {
             localStorage.removeItem('lexph_history');
             loadStats();
         }
