@@ -1,0 +1,38 @@
+[
+  {
+    "subject": "Criminal",
+    "title": "People vs. Genosa (G.R. No. 135981)",
+    "ratio": "Recognized Battered Woman Syndrome (BWS). A woman who has suffered at least three cycles of violence may validly claim self-defense even if the aggression was not 'imminent' in the traditional sense.",
+    "mnemonic": "Genosa: BWS Self-Defense"
+  },
+  {
+    "subject": "Criminal",
+    "title": "People vs. Oanis (74 Phil. 257)",
+    "ratio": "Mistake of Fact is a defense only if the act would have been lawful had the facts been as the accused believed them to be. Police killing a sleeping man they thought was a fugitive is Murder, not mistake of fact.",
+    "mnemonic": "Oanis: No Sleeping Mistake"
+  },
+  {
+    "subject": "Criminal",
+    "title": "Pro Reo Doctrine",
+    "ratio": "When a law or fact is susceptible to two interpretations—one lenient to the accused and one strict—the interpretation favorable to the accused must be adopted.",
+    "mnemonic": "Pro Reo: Doubt goes to Accused"
+  },
+  {
+    "subject": "Criminal",
+    "title": "People vs. Guillen (85 Phil. 307)",
+    "ratio": "Error in personae (mistake in identity) or Aberratio Ictus (mistake in blow) does not exempt the accused from criminal liability but may result in a complex crime under Article 48.",
+    "mnemonic": "Guillen: Target vs. Victim"
+  },
+  {
+    "subject": "Criminal",
+    "title": "Praeter Intentionem",
+    "ratio": "A mitigating circumstance where the injurious result is greater than that intended. Requires a notable disparity between the means employed and the resulting felony.",
+    "mnemonic": "Praeter: More Harm than Intended"
+  },
+  {
+    "subject": "Criminal",
+    "title": "Complex Crime (Art. 48)",
+    "ratio": "Occurs when a single act constitutes two or more grave or less grave felonies, or when an offense is a necessary means for committing the other. Penalty for the most serious crime is imposed in its maximum period.",
+    "mnemonic": "Art 48: Maximum Penalty"
+  }
+]
