@@ -3,50 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LexPH: Cloud-Integrated Law Portal</title>
+    <title>LexPH: Ultimate Cloud Law Suite</title>
     <style>
         :root { --navy: #002147; --crimson: #800000; --gold: #b8860b; --bg: #f8f9fa; }
         body { font-family: 'Times New Roman', serif; background: var(--bg); margin: 0; display: flex; height: 100vh; }
         
-        nav { width: 260px; background: var(--navy); color: white; padding: 20px; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
-        nav h1 { color: var(--gold); text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
-        nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 5px 0; cursor: pointer; text-align: left; border-radius: 4px; transition: 0.2s; }
+        /* Navigation */
+        nav { width: 280px; background: var(--navy); color: white; padding: 20px; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.3); z-index: 10; }
+        nav h1 { color: var(--gold); text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; margin-bottom: 20px; }
+        nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 4px; transition: 0.2s; font-size: 0.9rem; }
         nav button:hover, .active-nav { background: var(--crimson) !important; border-color: var(--gold); }
 
+        /* Main Workspace */
         main { flex: 1; overflow-y: auto; padding: 30px; }
         .container { max-width: 900px; margin: auto; }
         .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; }
         
-        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 1000; justify-content: center; align-items: center; font-weight: bold; }
-        .ratio-text { font-style: italic; color: #333; border-left: 4px solid var(--gold); padding-left: 15px; margin: 15px 0; }
-        .btn-main { background: var(--navy); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        /* Search & UI */
+        .search-container { position: sticky; top: -30px; background: var(--bg); padding: 10px 0; z-index: 5; margin-bottom: 20px; }
+        #globalSearch { width: 100%; padding: 15px; border: 2px solid var(--navy); border-radius: 30px; font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .ratio-text { font-style: italic; color: #333; border-left: 4px solid var(--gold); padding-left: 15px; margin: 15px 0; line-height: 1.6; }
+        .subject-tag { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
         
-        /* Flashcards */
-        .flashcard { height: 300px; border: 2px solid var(--gold); border-radius: 15px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; background: white; cursor: pointer; transition: 0.3s; }
+        /* Flashcard */
+        .flash-card { height: 300px; background: white; border: 2px solid var(--gold); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; cursor: pointer; transition: transform 0.3s; }
+        .flash-card:active { transform: scale(0.98); }
+
+        .loader { display:none; color: var(--gold); font-size: 0.8rem; text-align: center; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div id="loader" class="loading-overlay">Syncing with GitHub Data...</div>
-
 <nav>
     <h1>LexPH Alpha</h1>
-    <div style="padding: 10px 0; font-size: 0.8rem; color: var(--gold);">Select Syllabus Module:</div>
-    <button onclick="fetchModule('civil_law.json')">⚖️ Civil Law</button>
-    <button onclick="fetchModule('criminal_law.json')">⚖️ Criminal Law</button>
-    <button onclick="fetchModule('remedial_law.json')">⚖️ Remedial Law</button>
-    <hr style="width:100%; border: 0.5px solid rgba(255,255,255,0.1);">
-    <button onclick="showView('db')" id="nav-db">📚 Study Repository</button>
-    <button onclick="showView('quiz')" id="nav-quiz">✍️ Practice Quiz</button>
+    
+    <button onclick="indexAllData()" style="color: var(--gold); border: 1px solid var(--gold); font-weight: bold; margin-bottom: 15px;">🔍 Index All Modules</button>
+    <div id="index-status" class="loader">Ready to search...</div>
+
+    <div style="font-size: 0.75rem; color: #aaa; margin: 10px 0;">SUBJECT MODULES:</div>
+    <button onclick="fetchModule('civil_law.json')">Civil Law</button>
+    <button onclick="fetchModule('criminal_law.json')">Criminal Law</button>
+    <button onclick="fetchModule('remedial_law.json')">Remedial Law</button>
+    <button onclick="fetchModule('political_law.json')">Political Law</button>
+
+    <div style="font-size: 0.75rem; color: #aaa; margin: 20px 0 10px;">STUDY TOOLS:</div>
+    <button onclick="showView('db')" id="nav-db" class="active-nav">📚 Repository</button>
+    <button onclick="showView('quiz')" id="nav-quiz">✍️ Quiz Mode</button>
     <button onclick="showView('flash')" id="nav-flash">🎴 Flashcards</button>
-    <div style="margin-top:auto; font-size: 0.7rem; opacity: 0.6;">Cloud Sync Enabled</div>
 </nav>
 
 <main>
     <div class="container">
+        
+        <div class="search-container">
+            <input type="text" id="globalSearch" placeholder="Instant Search: Type any keyword (e.g. 'Psychological', 'Due Process', 'Self-defense')..." onkeyup="handleSearch()">
+        </div>
+
         <div id="view-db" class="view">
-            <h2 id="module-title">Select a Module to Load Data</h2>
-            <div id="db-list"></div>
+            <h2 id="view-title">Legal Repository</h2>
+            <div id="db-content"></div>
         </div>
 
         <div id="view-quiz" class="view" style="display:none;">
@@ -55,104 +70,107 @@
         </div>
 
         <div id="view-flash" class="view" style="display:none;">
-            <h2>Doctrine Memory Recall</h2>
-            <div class="flashcard" id="flash-box" onclick="toggleFlash()">
-                <div id="flash-content">Select a module first.</div>
+            <h2>Active Recall</h2>
+            <div class="flash-card" onclick="flipFlash()">
+                <div id="flash-display">Select a module or search for a case to begin.</div>
             </div>
-            <div style="text-align:center; margin-top:20px;">
-                <button class="btn-main" onclick="loadNewCard()">Next Case →</button>
-            </div>
+            <button onclick="nextFlash()" style="margin-top:20px; width:100%; padding:15px; background:var(--navy); color:white; border:none; border-radius:8px; cursor:pointer;">Next Random Case</button>
         </div>
+
     </div>
 </main>
 
 <script>
-    let activeDB = [];
+    let activeDB = []; // Currently displayed data
+    let globalIndex = []; // All data from all files
+    let moduleFiles = ['civil_law.json', 'criminal_law.json', 'remedial_law.json', 'political_law.json'];
+    let currentFlash = null;
     let isFlipped = false;
-    let currentCard = null;
 
-    // --- CLOUD FETCH LOGIC ---
-    async function fetchModule(fileName) {
-        const loader = document.getElementById('loader');
-        loader.style.display = 'flex';
+    // --- GLOBAL INDEXER ---
+    async function indexAllData() {
+        const status = document.getElementById('index-status');
+        status.style.display = 'block';
+        status.innerText = "Indexing all files...";
+        globalIndex = [];
         
-        try {
-            // This fetches the JSON file from your GitHub repository folder
-            const response = await fetch(fileName);
-            if (!response.ok) throw new Error("File not found");
-            activeDB = await response.json();
-            
-            document.getElementById('module-title').innerText = fileName.replace('_', ' ').replace('.json', '').toUpperCase();
-            renderDB();
-            loader.style.display = 'none';
-            alert(`Loaded ${activeDB.length} records.`);
-        } catch (err) {
-            loader.style.display = 'none';
-            alert("Error: To test locally, you need a local server. On GitHub, ensure " + fileName + " exists in your root folder.");
+        for (let file of moduleFiles) {
+            try {
+                const res = await fetch(file);
+                const data = await res.json();
+                globalIndex = [...globalIndex, ...data];
+            } catch (e) { console.log(`File ${file} not found.`); }
         }
+        
+        activeDB = globalIndex;
+        status.innerText = `Search Ready: ${globalIndex.length} records`;
+        renderDB();
     }
 
-    function showView(v) {
-        document.querySelectorAll('.view').forEach(x => x.style.display = 'none');
-        document.getElementById('view-' + v).style.display = 'block';
+    // --- SEARCH LOGIC ---
+    function handleSearch() {
+        const term = document.getElementById('globalSearch').value.toLowerCase();
+        const source = globalIndex.length > 0 ? globalIndex : activeDB;
+        
+        const filtered = source.filter(item => 
+            item.title.toLowerCase().includes(term) || 
+            item.ratio.toLowerCase().includes(term) ||
+            (item.mnemonic && item.mnemonic.toLowerCase().includes(term))
+        );
+        
+        renderDB(filtered);
     }
 
-    function renderDB() {
-        const area = document.getElementById('db-list');
-        area.innerHTML = activeDB.map((e, i) => `
+    // --- DATA FETCH ---
+    async function fetchModule(file) {
+        try {
+            const res = await fetch(file);
+            activeDB = await res.json();
+            document.getElementById('view-title').innerText = file.replace('.json','').replace('_',' ').toUpperCase();
+            renderDB();
+            showView('db');
+        } catch (e) { alert("File not found on GitHub yet."); }
+    }
+
+    function renderDB(data = activeDB) {
+        const area = document.getElementById('db-content');
+        if (data.length === 0) {
+            area.innerHTML = "<p>No matches found. Try indexing all modules first.</p>";
+            return;
+        }
+        area.innerHTML = data.map(item => `
             <div class="card">
-                <h3>${e.title}</h3>
-                <p class="ratio-text">${e.ratio}</p>
-                <div style="background:#e3f2fd; padding:10px; border-radius:5px; font-size:0.9rem;">
-                    <strong>Mnemonic:</strong> ${e.mnemonic || 'None'}
-                </div>
-                <a href="https://elibrary.judiciary.gov.ph/search?q=${encodeURIComponent(e.title)}" target="_blank" style="display:inline-block; margin-top:10px; font-size:0.8rem; color:var(--navy);">View Full Judgment 🔗</a>
+                <span class="subject-tag">${item.subject || 'Law'}</span>
+                <h3>${item.title}</h3>
+                <p class="ratio-text">${item.ratio}</p>
+                ${item.mnemonic ? `<div style="color:var(--navy); font-weight:bold;">Mnemonic: ${item.mnemonic}</div>` : ''}
             </div>
         `).join('');
     }
 
-    // --- FLASHCARD LOGIC ---
-    function loadNewCard() {
-        if(!activeDB.length) return;
-        currentCard = activeDB[Math.floor(Math.random() * activeDB.length)];
+    function showView(v) {
+        document.querySelectorAll('.view').forEach(x => x.style.display = 'none');
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
+        document.getElementById('view-' + v).style.display = 'block';
+        if(document.getElementById('nav-' + v)) document.getElementById('nav-' + v).classList.add('active-nav');
+    }
+
+    // --- FLASHCARD & QUIZ LOGIC (Simplified for integration) ---
+    function nextFlash() {
+        const pool = globalIndex.length > 0 ? globalIndex : activeDB;
+        if(pool.length === 0) return;
+        currentFlash = pool[Math.floor(Math.random() * pool.length)];
         isFlipped = false;
-        document.getElementById('flash-content').innerHTML = `<h3>${currentCard.title}</h3><p style="color:gray;">(Click to see Ratio)</p>`;
+        document.getElementById('flash-display').innerHTML = `<h3>${currentFlash.title}</h3><p>(Click to flip)</p>`;
     }
 
-    function toggleFlash() {
-        if(!currentCard) return;
-        const content = document.getElementById('flash-content');
-        if(isFlipped) {
-            content.innerHTML = `<h3>${currentCard.title}</h3><p style="color:gray;">(Click to see Ratio)</p>`;
-        } else {
-            content.innerHTML = `<p class="ratio-text">${currentCard.ratio}</p><p style="color:var(--gold); font-weight:bold;">Mnemonic: ${currentCard.mnemonic}</p>`;
-        }
+    function flipFlash() {
+        if(!currentFlash) return;
+        const display = document.getElementById('flash-display');
+        display.innerHTML = isFlipped ? 
+            `<h3>${currentFlash.title}</h3><p>(Click to flip)</p>` : 
+            `<p class="ratio-text">${currentFlash.ratio}</p><strong>${currentFlash.mnemonic || ''}</strong>`;
         isFlipped = !isFlipped;
-    }
-
-    // --- QUIZ LOGIC ---
-    function startQuiz() {
-        const area = document.getElementById('quiz-area');
-        if(!activeDB.length) return area.innerHTML = "Load a module first.";
-        const current = activeDB[Math.floor(Math.random() * activeDB.length)];
-        let opts = [current.title];
-        while(opts.length < 3) {
-            let r = activeDB[Math.floor(Math.random() * activeDB.length)].title;
-            if(!opts.includes(r)) opts.push(r);
-        }
-        opts.sort(() => Math.random() - 0.5);
-        area.innerHTML = `
-            <h3>Identify the Doctrine:</h3>
-            <p class="ratio-text">${current.ratio}</p>
-            ${opts.map(o => `<button class="btn-main" style="display:block; width:100%; background:white; color:black; border:1px solid #ccc; margin:10px 0;" onclick="checkQ(this, '${o}', '${current.title}')">${o}</button>`).join('')}
-            <button onclick="startQuiz()" id="nq" style="display:none; margin-top:15px; width:100%;">Next Question</button>
-        `;
-    }
-
-    function checkQ(btn, sel, cor) {
-        if(sel === cor) btn.style.background = "#d4edda";
-        else btn.style.background = "#f8d7da";
-        document.getElementById('nq').style.display = "block";
     }
 </script>
 </body>
