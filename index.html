@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LexPH: Bar Suite & Codals</title>
+    <title>LexPH: Ultimate Bar Suite</title>
     <style>
         :root { --navy: #002147; --crimson: #800000; --gold: #b8860b; --bg: #f8f9fa; --white: #ffffff; }
         * { box-sizing: border-box; }
         body { font-family: 'Georgia', serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar Navigation */
+        /* Navigation & Sidebar */
         nav { width: 280px; background: var(--navy); color: white; padding: 20px; display: flex; flex-direction: column; height: 100%; position: fixed; left: -280px; transition: 0.3s ease; z-index: 1000; }
         nav.open { left: 0; }
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
-        
         header { position: fixed; top: 0; width: 100%; height: 60px; background: var(--navy); display: flex; align-items: center; padding: 0 15px; color: white; z-index: 900; border-bottom: 2px solid var(--gold); }
         .menu-btn { font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--gold); margin-right: 15px; }
 
+        /* Main Workspace */
         main { flex: 1; padding: 75px 15px 30px; overflow-y: auto; width: 100%; -webkit-overflow-scrolling: touch; }
         .container { max-width: 800px; margin: auto; }
-        
         .card { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        
+        /* Buttons & Text */
         nav h1 { color: var(--gold); font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
         nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 6px; width: 100%; }
-        nav button:hover, .active-nav { background: var(--crimson) !important; border-color: var(--gold); }
-        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; margin-top: 10px; border: none; width: 100%; padding: 16px; border-radius: 8px; cursor: pointer; }
+        nav button:hover { background: var(--crimson) !important; border-color: var(--gold); }
+        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; border: none; width: 100%; padding: 16px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
 
-        .ratio-text { font-style: italic; color: #333; border-left: 4px solid var(--gold); padding-left: 15px; margin: 15px 0; font-size: 1.05rem; line-height: 1.5; }
-        .codal-text { font-family: 'Times New Roman', serif; line-height: 1.6; white-space: pre-wrap; font-size: 1.1rem; color: #222; }
+        /* Codal Styling */
+        .codal-text { font-family: 'Times New Roman', serif; line-height: 1.7; font-size: 1.1rem; color: #1a1a1a; white-space: pre-wrap; text-align: justify; }
+        .article-num { color: var(--crimson); font-weight: bold; display: block; margin-top: 15px; border-bottom: 1px solid #eee; }
 
         @media (min-width: 1024px) {
             nav { position: relative; left: 0; }
@@ -48,33 +50,36 @@
     <h1>LexPH Master</h1>
     <button onclick="indexAllData(); toggleNav()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">🔄 Sync All Modules</button>
     
-    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">STUDY TOOLS</div>
-    <button onclick="showView('db'); toggleNav()" id="nav-db" class="active-nav">📚 Case Repository</button>
-    <button onclick="showView('codal'); toggleNav()" id="nav-codal">📖 Codal Library</button>
-    <button onclick="showView('exam'); toggleNav()" id="nav-exam">📝 Mock Exam</button>
-    <button onclick="showView('stats'); toggleNav()" id="nav-stats">📊 Performance</button>
+    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">TOOLS</div>
+    <button onclick="showView('db'); toggleNav()">📚 Case Repository</button>
+    <button onclick="showView('codal'); toggleNav()">📖 Codal Library</button>
+    <button onclick="showView('exam'); toggleNav()">📝 Mock Exam</button>
+    <button onclick="showView('stats'); toggleNav()">📊 Performance</button>
 
     <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">SUBJECTS</div>
     <button onclick="fetchModule('civil_law.json'); toggleNav()">Civil Law</button>
     <button onclick="fetchModule('criminal_law.json'); toggleNav()">Criminal Law</button>
     <button onclick="fetchModule('political_law.json'); toggleNav()">Political Law</button>
+    <button onclick="fetchModule('labor_law.json'); toggleNav()">Labor Law</button>
+    <button onclick="fetchModule('remedial_law.json'); toggleNav()">Remedial Law</button>
 </nav>
 
 <main>
     <div class="container">
         
         <div id="view-db" class="view">
-            <h2 id="view-title" style="margin-top:0;">Case Repository</h2>
+            <h2 id="view-title">Repository</h2>
             <div id="db-content"></div>
         </div>
 
         <div id="view-codal" class="view" style="display:none;">
-            <h2 style="margin-top:0;">Codal Library</h2>
-            <select id="codal-selector" onchange="loadCodalText()" style="width:100%; padding:12px; border-radius:8px; margin-bottom:15px;">
-                <option value="">-- Select a Statute --</option>
-                <option value="rpc">Revised Penal Code (Book 1)</option>
-                <option value="civ">Civil Code (Family Code Highlights)</option>
-                <option value="consti">1987 Constitution (Bill of Rights)</option>
+            <h2>Codal Library</h2>
+            <select id="codal-selector" onchange="loadCodalText()" style="width:100%; padding:14px; border-radius:8px; border: 1px solid var(--gold); margin-bottom: 20px;">
+                <option value="">-- Select Codal --</option>
+                <option value="billOfRights">1987 Bill of Rights</option>
+                <option value="rpcBook1">Revised Penal Code (Book 1)</option>
+                <option value="laborCode">Labor Code (Art 1-6)</option>
+                <option value="evidence">Rules on Evidence (Rule 128-130)</option>
             </select>
             <div id="codal-display" class="card codal-text" style="display:none;"></div>
         </div>
@@ -82,28 +87,27 @@
         <div id="view-exam" class="view" style="display:none;">
             <div id="exam-setup" class="card">
                 <h2>Mock Exam</h2>
-                <select id="exam-scope" style="padding:12px; width:100%; border-radius:8px; margin-bottom:15px;">
-                    <option value="global">Mixed Subjects</option>
-                    <option value="active">Last Loaded Subject</option>
-                </select>
-                <button class="btn-gold" onclick="startMockExam()">Start Quiz</button>
+                <button class="btn-gold" onclick="startMockExam()">Start 10-Question Random Quiz</button>
             </div>
             <div id="exam-container" class="card" style="display:none;">
-                <div id="exam-progress" style="font-size:0.8rem; color:#666; margin-bottom:10px;"></div>
+                <div id="exam-progress" style="font-weight:bold; margin-bottom:10px; color: var(--navy);"></div>
                 <div id="exam-question"></div>
                 <div id="exam-options"></div>
-                <button id="next-exam-btn" class="btn-gold" style="display:none;" onclick="nextExamQuestion()">Next →</button>
+                <button id="next-exam-btn" class="btn-gold" style="display:none; margin-top:20px;" onclick="nextExamQuestion()">Next Question</button>
             </div>
             <div id="exam-results" class="card" style="display:none; text-align:center;">
-                <h1 id="final-score" style="font-size:3rem;"></h1>
+                <h1 id="final-score" style="font-size: 3rem; color: var(--gold);"></h1>
                 <button class="btn-gold" onclick="resetExamUI()">Try Again</button>
             </div>
         </div>
 
         <div id="view-stats" class="view" style="display:none;">
             <div class="card">
-                <h2>Analytics</h2>
-                <h1 id="avg-accuracy" style="text-align:center; color:var(--gold); font-size:3rem;">0%</h1>
+                <h2>Performance</h2>
+                <div style="background: var(--navy); color: white; border-radius: 8px; padding: 20px; text-align:center; margin-bottom: 20px;">
+                    <small style="color:var(--gold);">AVERAGE SCORE</small>
+                    <h1 id="avg-accuracy" style="margin:0;">0%</h1>
+                </div>
                 <div id="history-list"></div>
             </div>
         </div>
@@ -112,81 +116,68 @@
 </main>
 
 <script>
-    // --- DATA & STATE ---
-    let activeDB = [];
     let globalIndex = [];
-    const moduleFiles = ['civil_law.json', 'criminal_law.json', 'political_law.json', 'labor_law.json', 'tax_law.json', 'remedial_law.json', 'ethics_law.json'];
-    
-    // Static Codal Content (Simulated Database)
-    const codalData = {
-        rpc: "ARTICLE 1. Time when Act takes effect...\nARTICLE 2. Application of its provisions...\nARTICLE 3. Felonies - Acts and omissions punishable by law...",
-        civ: "ARTICLE 1. This Act shall be known as the Civil Code...\nFAMILY CODE ART. 1. Marriage is a special contract of permanent union...",
-        consti: "SECTION 1. No person shall be deprived of life, liberty, or property without due process...\nSECTION 2. The right of the people to be secure in their persons..."
+    let activeDB = [];
+    let currentExamIdx = 0;
+    let examScore = 0;
+    let examQuestions = [];
+
+    const codals = {
+        billOfRights: `<span class="article-num">SECTION 1</span> No person shall be deprived of life, liberty, or property without due process of law...`,
+        rpcBook1: `<span class="article-num">ARTICLE 3</span> Felonies are committed not only by means of deceit (dolo) but also by means of fault (culpa)...`,
+        laborCode: `PRELIMINARY TITLE
+<span class="article-num">ARTICLE 3. Declaration of basic policy.</span> The State shall afford protection to labor, promote full employment, ensure equal work opportunities regardless of sex, race or creed and regulate the relations between workers and employers.
+        
+<span class="article-num">ARTICLE 4. Construction in favor of labor.</span> All doubts in the implementation and interpretation of the provisions of this Code, including its implementing rules and regulations, shall be resolved in favor of labor.`,
+        evidence: `RULE 128: GENERAL PROVISIONS
+<span class="article-num">SECTION 1. Evidence defined.</span> Evidence is the means, sanctioned by these rules, of ascertaining in a judicial proceeding the truth respecting a matter of fact.
+        
+<span class="article-num">SECTION 3. Admissibility of evidence.</span> Evidence is admissible when it is relevant to the issue and is not excluded by the law of these rules.`
     };
-
-    function toggleNav() {
-        if (window.innerWidth < 1024) {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
-        }
-    }
-
-    function showView(v) {
-        document.querySelectorAll('.view').forEach(x => x.style.display = 'none');
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
-        document.getElementById('view-' + v).style.display = 'block';
-        if(document.getElementById('nav-' + v)) document.getElementById('nav-' + v).classList.add('active-nav');
-    }
 
     function loadCodalText() {
         const val = document.getElementById('codal-selector').value;
         const display = document.getElementById('codal-display');
-        if(val) {
-            display.innerText = codalData[val];
-            display.style.display = 'block';
-        } else {
-            display.style.display = 'none';
-        }
+        if(val) { display.innerHTML = codals[val]; display.style.display = 'block'; }
+        else { display.style.display = 'none'; }
     }
 
-    // --- REPOSITORY LOGIC ---
+    function toggleNav() {
+        const sb = document.getElementById('sidebar');
+        sb.classList.toggle('open');
+        document.getElementById('overlay').style.display = sb.classList.contains('open') ? 'block' : 'none';
+    }
+
+    function showView(v) {
+        document.querySelectorAll('.view').forEach(x => x.style.display = 'none');
+        document.getElementById('view-' + v).style.display = 'block';
+        if(v === 'stats') loadStats();
+    }
+
     async function indexAllData() {
+        const files = ['civil_law.json', 'criminal_law.json', 'political_law.json', 'labor_law.json', 'remedial_law.json'];
         globalIndex = [];
-        for (let file of moduleFiles) {
+        for (let f of files) {
             try {
-                const res = await fetch(file);
+                const res = await fetch(f);
                 if(res.ok) globalIndex = [...globalIndex, ...(await res.json())];
-            } catch (e) { console.warn("Missing: " + file); }
+            } catch(e) {}
         }
         activeDB = globalIndex;
         renderDB();
-        alert("Indexed " + globalIndex.length + " cases.");
+        alert("System Synced!");
     }
 
-    async function fetchModule(file) {
-        try {
-            const res = await fetch(file);
-            if(res.ok) {
-                activeDB = await res.json();
-                document.getElementById('view-title').innerText = file.replace('.json','').toUpperCase();
-                renderDB();
-                showView('db');
-            }
-        } catch(e) { alert("Module not found."); }
+    async function fetchModule(f) {
+        const res = await fetch(f);
+        if(res.ok) { activeDB = await res.json(); renderDB(); showView('db'); }
     }
 
-    function renderDB(data = activeDB) {
+    function renderDB() {
         const area = document.getElementById('db-content');
-        area.innerHTML = data.length ? data.map(i => `
-            <div class="card">
-                <small style="color:var(--gold); font-weight:bold;">${i.subject || 'LAW'}</small>
-                <h3 style="margin:5px 0;">${i.title}</h3>
-                <p class="ratio-text">${i.ratio}</p>
-            </div>
-        `).join('') : "<p>Select a subject to begin.</p>";
+        area.innerHTML = activeDB.map(i => `<div class="card"><strong>${i.title}</strong><p class="codal-text" style="font-style:italic; border-left:3px solid var(--gold); padding-left:10px; margin-top:10px;">${i.ratio}</p></div>`).join('');
     }
 
-    // --- EXAM ENGINE (SAME AS v7.2) ---
     function resetExamUI() {
         document.getElementById('exam-setup').style.display = 'block';
         document.getElementById('exam-container').style.display = 'none';
@@ -194,54 +185,61 @@
     }
 
     function startMockExam() {
-        const pool = (document.getElementById('exam-scope').value === 'global') ? globalIndex : activeDB;
-        if(!pool.length) return alert("Sync data first!");
-        examQuestions = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5);
+        if(!globalIndex.length) return alert("Please Sync All Modules first!");
+        examQuestions = [...globalIndex].sort(() => 0.5 - Math.random()).slice(0, 10);
         currentExamIdx = 0; examScore = 0;
         document.getElementById('exam-setup').style.display = 'none';
         document.getElementById('exam-container').style.display = 'block';
-        loadExamQuestion();
+        loadQuestion();
     }
 
-    function loadExamQuestion() {
+    function loadQuestion() {
         const q = examQuestions[currentExamIdx];
-        document.getElementById('exam-progress').innerText = `Q ${currentExamIdx+1} of 5`;
-        document.getElementById('exam-question').innerHTML = `<p class="ratio-text">${q.ratio}</p>`;
+        document.getElementById('exam-progress').innerText = `QUESTION ${currentExamIdx+1} OF 10`;
+        document.getElementById('exam-question').innerHTML = `<p>${q.ratio}</p>`;
         let opts = [q.title];
         while(opts.length < 4) {
             let r = globalIndex[Math.floor(Math.random()*globalIndex.length)].title;
             if(!opts.includes(r)) opts.push(r);
         }
         opts.sort(() => 0.5 - Math.random());
-        document.getElementById('exam-options').innerHTML = opts.map(o => `<button class="quiz-option" onclick="checkAnswer(this,'${o}','${q.title}')">${o}</button>`).join('');
+        document.getElementById('exam-options').innerHTML = opts.map(o => `<button class="btn-gold" style="background:white !important; color:black !important; border:1px solid #ccc; margin:5px 0;" onclick="checkAnswer(this,'${o}','${q.title}')">${o}</button>`).join('');
         document.getElementById('next-exam-btn').style.display = 'none';
     }
 
     function checkAnswer(btn, sel, cor) {
-        document.querySelectorAll('#exam-options .quiz-option').forEach(b => b.style.pointerEvents = 'none');
-        if(sel === cor) { btn.classList.add('correct'); examScore++; }
-        else { btn.classList.add('wrong'); }
+        document.querySelectorAll('#exam-options button').forEach(b => b.style.pointerEvents = 'none');
+        if(sel === cor) { btn.style.background = "#d4edda !important"; examScore++; }
+        else { btn.style.background = "#f8d7da !important"; }
         document.getElementById('next-exam-btn').style.display = 'block';
     }
 
     function nextExamQuestion() {
         currentExamIdx++;
-        if(currentExamIdx < 5) loadExamQuestion();
-        else finalizeExam();
+        if(currentExamIdx < 10) loadQuestion();
+        else {
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'block';
+            document.getElementById('final-score').innerText = `${examScore}/10`;
+            saveStats(examScore);
+        }
     }
 
-    function finalizeExam() {
-        document.getElementById('exam-container').style.display = 'none';
-        document.getElementById('exam-results').style.display = 'block';
-        document.getElementById('final-score').innerText = `${examScore}/5`;
-        const history = JSON.parse(localStorage.getItem('lexph_history') || '[]');
-        history.push({ date: new Date().toLocaleDateString(), score: examScore + "/5", percent: (examScore/5)*100 });
-        localStorage.setItem('lexph_history', JSON.stringify(history));
+    function saveStats(s) {
+        const h = JSON.parse(localStorage.getItem('lexph_stats') || '[]');
+        h.push({ date: new Date().toLocaleDateString(), score: s });
+        localStorage.setItem('lexph_stats', JSON.stringify(h));
     }
 
     function loadStats() {
-        const h = JSON.parse(localStorage.getItem('lexph_history') || '[]');
-        document.getElementById('history-list').innerHTML = h.reverse().map(i => `<div style="padding:10px; border-bottom:1px solid #eee;">${i.date}: ${i.score}</div>`).join('');
+        const h = JSON.parse(localStorage.getItem('lexph_stats') || '[]');
+        if(!h.length) return;
+        let total = 0;
+        document.getElementById('history-list').innerHTML = h.reverse().map(i => {
+            total += i.score;
+            return `<div style="padding:10px; border-bottom:1px solid #eee;">${i.date}: ${i.score}/10</div>`;
+        }).join('');
+        document.getElementById('avg-accuracy').innerText = Math.round((total / (h.length * 10)) * 100) + "%";
     }
 </script>
 </body>
