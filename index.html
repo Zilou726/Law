@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LexPH: Ultimate Bar Suite</title>
+    <title>LexPH: Ultimate Codal Edition</title>
     <style>
         :root { --navy: #002147; --crimson: #800000; --gold: #b8860b; --bg: #f8f9fa; --white: #ffffff; }
         * { box-sizing: border-box; }
         body { font-family: 'Georgia', serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* Navigation & Sidebar */
+        /* Sidebar & Layout */
         nav { width: 280px; background: var(--navy); color: white; padding: 20px; display: flex; flex-direction: column; height: 100%; position: fixed; left: -280px; transition: 0.3s ease; z-index: 1000; }
         nav.open { left: 0; }
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
-        header { position: fixed; top: 0; width: 100%; height: 60px; background: var(--navy); display: flex; align-items: center; padding: 0 15px; color: white; z-index: 900; border-bottom: 2px solid var(--gold); }
-        .menu-btn { font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--gold); margin-right: 15px; }
+        header { position: fixed; top: 0; width: 100%; height: 60px; background: var(--navy); display: flex; align-items: center; padding: 0 -15px; color: white; z-index: 900; border-bottom: 2px solid var(--gold); }
+        .menu-btn { font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--gold); margin-left: 15px; }
 
-        /* Main Workspace */
         main { flex: 1; padding: 75px 15px 30px; overflow-y: auto; width: 100%; -webkit-overflow-scrolling: touch; }
         .container { max-width: 800px; margin: auto; }
         .card { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
         
-        /* Buttons & Text */
-        nav h1 { color: var(--gold); font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
+        /* Codal Typography */
+        .codal-text { font-family: 'Times New Roman', serif; line-height: 1.8; font-size: 1.15rem; color: #1a1a1a; white-space: pre-wrap; text-align: justify; }
+        .article-num { color: var(--crimson); font-weight: bold; display: block; margin-top: 20px; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 10px; }
+        .statute-title { text-align: center; color: var(--navy); border-bottom: 2px solid var(--gold); padding-bottom: 10px; margin-bottom: 20px; }
+        
+        /* Buttons */
         nav button { background: none; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; margin: 4px 0; cursor: pointer; text-align: left; border-radius: 6px; width: 100%; }
-        nav button:hover { background: var(--crimson) !important; border-color: var(--gold); }
-        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; border: none; width: 100%; padding: 16px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
-
-        /* Codal Styling */
-        .codal-text { font-family: 'Times New Roman', serif; line-height: 1.7; font-size: 1.1rem; color: #1a1a1a; white-space: pre-wrap; text-align: justify; }
-        .article-num { color: var(--crimson); font-weight: bold; display: block; margin-top: 15px; border-bottom: 1px solid #eee; }
+        .btn-gold { background: var(--gold) !important; color: white !important; font-weight: bold; text-align: center; border: none; width: 100%; padding: 16px; border-radius: 8px; cursor: pointer; }
 
         @media (min-width: 1024px) {
             nav { position: relative; left: 0; }
@@ -42,72 +40,62 @@
 
 <div id="overlay" onclick="toggleNav()"></div>
 <header>
-    <button class="menu-btn" onclick="toggleNav()">☰</button>
-    <div style="font-weight: bold; color: var(--gold);">LexPH Suite</div>
+    <button class="menu-btn" onclick="toggleNav()">☰ Menu</button>
+    <div style="flex:1; text-align:right; padding-right:20px; font-weight:bold; color:var(--gold);">LexPH Suite</div>
 </header>
 
 <nav id="sidebar">
-    <h1>LexPH Master</h1>
-    <button onclick="indexAllData(); toggleNav()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">🔄 Sync All Modules</button>
-    
-    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">TOOLS</div>
+    <h1 style="color:var(--gold); text-align:center;">LexPH</h1>
     <button onclick="showView('db'); toggleNav()">📚 Case Repository</button>
     <button onclick="showView('codal'); toggleNav()">📖 Codal Library</button>
     <button onclick="showView('exam'); toggleNav()">📝 Mock Exam</button>
     <button onclick="showView('stats'); toggleNav()">📊 Performance</button>
-
-    <div style="font-size: 0.7rem; color: #aaa; margin: 15px 0 5px;">SUBJECTS</div>
-    <button onclick="fetchModule('civil_law.json'); toggleNav()">Civil Law</button>
-    <button onclick="fetchModule('criminal_law.json'); toggleNav()">Criminal Law</button>
-    <button onclick="fetchModule('political_law.json'); toggleNav()">Political Law</button>
-    <button onclick="fetchModule('labor_law.json'); toggleNav()">Labor Law</button>
-    <button onclick="fetchModule('remedial_law.json'); toggleNav()">Remedial Law</button>
+    <hr style="width:100%; border:0; border-top:1px solid #444;">
+    <button onclick="indexAllData(); toggleNav()" style="color:var(--gold);">🔄 Sync All JSON</button>
 </nav>
 
 <main>
     <div class="container">
         
-        <div id="view-db" class="view">
-            <h2 id="view-title">Repository</h2>
-            <div id="db-content"></div>
-        </div>
-
         <div id="view-codal" class="view" style="display:none;">
-            <h2>Codal Library</h2>
-            <select id="codal-selector" onchange="loadCodalText()" style="width:100%; padding:14px; border-radius:8px; border: 1px solid var(--gold); margin-bottom: 20px;">
-                <option value="">-- Select Codal --</option>
-                <option value="billOfRights">1987 Bill of Rights</option>
-                <option value="rpcBook1">Revised Penal Code (Book 1)</option>
-                <option value="laborCode">Labor Code (Art 1-6)</option>
-                <option value="evidence">Rules on Evidence (Rule 128-130)</option>
+            <h2 class="statute-title">Official Codal Library</h2>
+            <select id="codal-selector" onchange="loadCodalText()" style="width:100%; padding:15px; border-radius:8px; border:2px solid var(--gold); margin-bottom:20px; font-size:1rem;">
+                <option value="">-- Select Statute to Read --</option>
+                <option value="consti">1987 Constitution (Bill of Rights)</option>
+                <option value="rpc">Revised Penal Code (Book 1 Highlights)</option>
+                <option value="fam">Family Code (Marriage & Status)</option>
+                <option value="labor">Labor Code (Basic Principles)</option>
+                <option value="remedial">Rules of Evidence (Key Rules)</option>
             </select>
             <div id="codal-display" class="card codal-text" style="display:none;"></div>
         </div>
 
+        <div id="view-db" class="view">
+            <h2 id="view-title">Cases</h2>
+            <div id="db-content"></div>
+        </div>
+
         <div id="view-exam" class="view" style="display:none;">
             <div id="exam-setup" class="card">
-                <h2>Mock Exam</h2>
+                <h2>Ready for a Mock Exam?</h2>
                 <button class="btn-gold" onclick="startMockExam()">Start 10-Question Random Quiz</button>
             </div>
             <div id="exam-container" class="card" style="display:none;">
-                <div id="exam-progress" style="font-weight:bold; margin-bottom:10px; color: var(--navy);"></div>
-                <div id="exam-question"></div>
+                <div id="exam-progress" style="font-weight:bold; color:var(--navy);"></div>
+                <div id="exam-question" style="margin:20px 0;"></div>
                 <div id="exam-options"></div>
                 <button id="next-exam-btn" class="btn-gold" style="display:none; margin-top:20px;" onclick="nextExamQuestion()">Next Question</button>
             </div>
             <div id="exam-results" class="card" style="display:none; text-align:center;">
-                <h1 id="final-score" style="font-size: 3rem; color: var(--gold);"></h1>
-                <button class="btn-gold" onclick="resetExamUI()">Try Again</button>
+                <h1 id="final-score" style="font-size:4rem; color:var(--gold);"></h1>
+                <button class="btn-gold" onclick="resetExamUI()">Back to Start</button>
             </div>
         </div>
 
         <div id="view-stats" class="view" style="display:none;">
             <div class="card">
-                <h2>Performance</h2>
-                <div style="background: var(--navy); color: white; border-radius: 8px; padding: 20px; text-align:center; margin-bottom: 20px;">
-                    <small style="color:var(--gold);">AVERAGE SCORE</small>
-                    <h1 id="avg-accuracy" style="margin:0;">0%</h1>
-                </div>
+                <h2>Performance Tracking</h2>
+                <h1 id="avg-accuracy" style="text-align:center; font-size:3rem; color:var(--gold);">0%</h1>
                 <div id="history-list"></div>
             </div>
         </div>
@@ -116,31 +104,39 @@
 </main>
 
 <script>
+    const codals = {
+        consti: `1987 CONSTITUTION (BILL OF RIGHTS)
+<span class="article-num">SECTION 1</span> No person shall be deprived of life, liberty, or property without due process of law, nor shall any person be denied the equal protection of the laws.
+<span class="article-num">SECTION 2</span> The right of the people to be secure in their persons, houses, papers, and effects against unreasonable searches and seizures of whatever nature and for any purpose shall be inviolable...
+<span class="article-num">SECTION 3</span> (1) The privacy of communication and correspondence shall be inviolable except upon lawful order of the court, or when public safety or order requires otherwise...
+<span class="article-num">SECTION 4</span> No law shall be passed abridging the freedom of speech, of expression, or of the press, or the right of the people peaceably to assemble and petition the government for redress of grievances.`,
+        
+        rpc: `REVISED PENAL CODE (BOOK 1)
+<span class="article-num">ARTICLE 3</span> Felonies are committed not only by means of deceit (dolo) but also by means of fault (culpa). There is deceit when the act is performed with deliberate intent...
+<span class="article-num">ARTICLE 6</span> Consummated, frustrated, and attempted felonies. — Consummated felonies, as well as those which are frustrated and attempted, are punishable.
+<span class="article-num">ARTICLE 11</span> Justifying circumstances. — The following do not incur any criminal liability: (1) Anyone who acts in defense of his person or rights... (2) Anyone who acts in defense of the person or rights of his spouse, ascendants, descendants...`,
+        
+        fam: `THE FAMILY CODE
+<span class="article-num">ARTICLE 1</span> Marriage is a special contract of permanent union between a man and a woman entered into in accordance with law...
+<span class="article-num">ARTICLE 35</span> The following marriages shall be void from the beginning: (1) Those contracted by any party below eighteen years of age...
+<span class="article-num">ARTICLE 36</span> A marriage contracted by any party who, at the time of the celebration, was psychologically incapacitated to comply with the essential marital obligations of marriage, shall likewise be void...`,
+        
+        labor: `THE LABOR CODE
+<span class="article-num">ARTICLE 3</span> Declaration of basic policy. The State shall afford protection to labor, promote full employment, ensure equal work opportunities...
+<span class="article-num">ARTICLE 4</span> Construction in favor of labor. All doubts in the implementation and interpretation of the provisions of this Code... shall be resolved in favor of labor.
+<span class="article-num">ARTICLE 297</span> Termination by employer. An employer may terminate an employment for any of the following causes: (a) Serious misconduct; (b) Willful disobedience; (c) Gross and habitual neglect...`,
+        
+        remedial: `RULES ON EVIDENCE
+<span class="article-num">RULE 128, SEC. 3</span> Admissibility of evidence. Evidence is admissible when it is relevant to the issue and is not excluded by the law or these rules.
+<span class="article-num">RULE 130, SEC. 3</span> Original Document Rule. When the subject of inquiry is the contents of a document, writing, recording, photograph or other record, no evidence is admissible other than the original document itself...
+<span class="article-num">RULE 130, SEC. 37</span> Dying Declaration. The declaration of a dying person, made under the consciousness of an impending death, may be received in any case wherein his death is the subject of inquiry...`
+    };
+
     let globalIndex = [];
     let activeDB = [];
     let currentExamIdx = 0;
     let examScore = 0;
     let examQuestions = [];
-
-    const codals = {
-        billOfRights: `<span class="article-num">SECTION 1</span> No person shall be deprived of life, liberty, or property without due process of law...`,
-        rpcBook1: `<span class="article-num">ARTICLE 3</span> Felonies are committed not only by means of deceit (dolo) but also by means of fault (culpa)...`,
-        laborCode: `PRELIMINARY TITLE
-<span class="article-num">ARTICLE 3. Declaration of basic policy.</span> The State shall afford protection to labor, promote full employment, ensure equal work opportunities regardless of sex, race or creed and regulate the relations between workers and employers.
-        
-<span class="article-num">ARTICLE 4. Construction in favor of labor.</span> All doubts in the implementation and interpretation of the provisions of this Code, including its implementing rules and regulations, shall be resolved in favor of labor.`,
-        evidence: `RULE 128: GENERAL PROVISIONS
-<span class="article-num">SECTION 1. Evidence defined.</span> Evidence is the means, sanctioned by these rules, of ascertaining in a judicial proceeding the truth respecting a matter of fact.
-        
-<span class="article-num">SECTION 3. Admissibility of evidence.</span> Evidence is admissible when it is relevant to the issue and is not excluded by the law of these rules.`
-    };
-
-    function loadCodalText() {
-        const val = document.getElementById('codal-selector').value;
-        const display = document.getElementById('codal-display');
-        if(val) { display.innerHTML = codals[val]; display.style.display = 'block'; }
-        else { display.style.display = 'none'; }
-    }
 
     function toggleNav() {
         const sb = document.getElementById('sidebar');
@@ -154,6 +150,14 @@
         if(v === 'stats') loadStats();
     }
 
+    function loadCodalText() {
+        const val = document.getElementById('codal-selector').value;
+        const display = document.getElementById('codal-display');
+        if(val) { display.innerHTML = codals[val]; display.style.display = 'block'; }
+        else { display.style.display = 'none'; }
+    }
+
+    // --- REPOSITORY & EXAM LOGIC ---
     async function indexAllData() {
         const files = ['civil_law.json', 'criminal_law.json', 'political_law.json', 'labor_law.json', 'remedial_law.json'];
         globalIndex = [];
@@ -165,7 +169,7 @@
         }
         activeDB = globalIndex;
         renderDB();
-        alert("System Synced!");
+        alert("Synced All Modules!");
     }
 
     async function fetchModule(f) {
@@ -175,7 +179,7 @@
 
     function renderDB() {
         const area = document.getElementById('db-content');
-        area.innerHTML = activeDB.map(i => `<div class="card"><strong>${i.title}</strong><p class="codal-text" style="font-style:italic; border-left:3px solid var(--gold); padding-left:10px; margin-top:10px;">${i.ratio}</p></div>`).join('');
+        area.innerHTML = activeDB.map(i => `<div class="card"><strong>${i.title}</strong><p style="font-style:italic; border-left:3px solid var(--gold); padding-left:10px; margin-top:10px;">${i.ratio}</p></div>`).join('');
     }
 
     function resetExamUI() {
@@ -185,7 +189,7 @@
     }
 
     function startMockExam() {
-        if(!globalIndex.length) return alert("Please Sync All Modules first!");
+        if(!globalIndex.length) return alert("Sync data first!");
         examQuestions = [...globalIndex].sort(() => 0.5 - Math.random()).slice(0, 10);
         currentExamIdx = 0; examScore = 0;
         document.getElementById('exam-setup').style.display = 'none';
@@ -196,14 +200,14 @@
     function loadQuestion() {
         const q = examQuestions[currentExamIdx];
         document.getElementById('exam-progress').innerText = `QUESTION ${currentExamIdx+1} OF 10`;
-        document.getElementById('exam-question').innerHTML = `<p>${q.ratio}</p>`;
+        document.getElementById('exam-question').innerHTML = `<p class="codal-text">${q.ratio}</p>`;
         let opts = [q.title];
         while(opts.length < 4) {
             let r = globalIndex[Math.floor(Math.random()*globalIndex.length)].title;
             if(!opts.includes(r)) opts.push(r);
         }
         opts.sort(() => 0.5 - Math.random());
-        document.getElementById('exam-options').innerHTML = opts.map(o => `<button class="btn-gold" style="background:white !important; color:black !important; border:1px solid #ccc; margin:5px 0;" onclick="checkAnswer(this,'${o}','${q.title}')">${o}</button>`).join('');
+        document.getElementById('exam-options').innerHTML = opts.map(o => `<button class="btn-gold" style="background:white !important; color:black !important; border:1px solid #ccc; margin:5px 0; font-weight:normal;" onclick="checkAnswer(this,'${o}','${q.title}')">${o}</button>`).join('');
         document.getElementById('next-exam-btn').style.display = 'none';
     }
 
@@ -237,7 +241,7 @@
         let total = 0;
         document.getElementById('history-list').innerHTML = h.reverse().map(i => {
             total += i.score;
-            return `<div style="padding:10px; border-bottom:1px solid #eee;">${i.date}: ${i.score}/10</div>`;
+            return `<div style="padding:12px; border-bottom:1px solid #eee;">${i.date}: <b>${i.score}/10</b></div>`;
         }).join('');
         document.getElementById('avg-accuracy').innerText = Math.round((total / (h.length * 10)) * 100) + "%";
     }
